@@ -30,7 +30,7 @@ func TestService_Info(t *testing.T) {
 	cl := configureNewIotClient(&Config{BaseUrl: ts.URL}, ts.Client())
 
 	t.Run("TEST DO", func(t *testing.T) {
-		body, err := cl.do("test", cl.config.BaseUrl, "GET")
+		body, err := cl.do(cl.config.BaseUrl, "GET")
 		require.NoError(t, err)
 		assert.Equal(t, []byte(jsonStringIfo+"\n"), body)
 	})
@@ -91,4 +91,66 @@ func TestService_Group(t *testing.T) {
 		assert.Equal(t, &testData, res)
 	})
 
+}
+
+func TestService_TriggerScenario(t *testing.T) {
+
+	jsonTestString := `{"status":"ok","request_id":"test"}`
+
+	ts := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, jsonTestString) }))
+	defer ts.Close()
+
+	cl := configureNewIotClient(&Config{BaseUrl: ts.URL}, ts.Client())
+
+	t.Run("TEST TriggerScenario", func(t *testing.T) {
+
+		res, err := cl.TriggerScenario("test")
+		require.NoError(t, err)
+
+		var testData IotResponseStatus
+		_ = json.Unmarshal([]byte(jsonTestString), &testData)
+
+		assert.Equal(t, &testData, res)
+	})
+
+}
+
+func TestService_Errors(t *testing.T) {
+
+	jsonTestString := `{"status":1,"request_id":"test"}`
+
+	ts := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, jsonTestString) }))
+	defer ts.Close()
+
+	cl := configureNewIotClient(&Config{BaseUrl: ts.URL}, ts.Client())
+
+	t.Run("TEST GetInfo ERROR", func(t *testing.T) {
+		_, err := cl.GetInfo()
+		require.Error(t, err)
+	})
+	t.Run("TEST TriggerScenario ERROR", func(t *testing.T) {
+		_, err := cl.GetGroup("test")
+		require.Error(t, err)
+	})
+	t.Run("TEST GetDevice ERROR", func(t *testing.T) {
+		_, err := cl.GetDevice("test")
+		require.Error(t, err)
+	})
+	t.Run("TEST TriggerScenario ERROR", func(t *testing.T) {
+		_, err := cl.TriggerScenario("test")
+		require.Error(t, err)
+	})
+}
+
+func TestService_Unauthorised(t *testing.T) {
+	t.Parallel()
+	cl := NewIotClient(NewConfig())
+
+	t.Run("TEST GetInfo 401", func(t *testing.T) {
+		_, err := cl.GetInfo()
+		require.Error(t, err)
+		assert.Equal(t, err.Error(), "401 Unauthorized")
+	})
 }

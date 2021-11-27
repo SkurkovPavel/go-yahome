@@ -1,12 +1,12 @@
 package iot
 
-type ResponseStatus struct {
+type IotResponseStatus struct {
 	RequestID string `json:"request_id" db:"request_id"`
 	Status    string `json:"status" db:"status"`
 }
 
 type IotInfoResponse struct {
-	ResponseStatus
+	IotResponseStatus
 	Rooms      []Room      `json:"rooms"`
 	Groups     []InfoGroup `json:"groups"`
 	Devices    []Device    `json:"devices"`
@@ -15,12 +15,12 @@ type IotInfoResponse struct {
 }
 
 type IotDeviceResponse struct {
-	ResponseStatus
+	IotResponseStatus
 	Device
 }
 
 type IotGroupResponse struct {
-	ResponseStatus
+	IotResponseStatus
 	Group
 }
 
