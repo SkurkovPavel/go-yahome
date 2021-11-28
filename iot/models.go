@@ -37,7 +37,7 @@ type Group struct {
 	Type         string       `json:"type"`
 	Devices      []Device     `json:"devices"`
 	Capabilities []Capability `json:"capabilities"`
-	Actions 	 []Capability `json:"actions"`
+	Actions      []Capability `json:"actions"`
 }
 type InfoGroup struct {
 	Id           string       `json:"id"`
@@ -69,7 +69,8 @@ type Device struct {
 	Groups       []string     `json:"groups"`
 	Capabilities []Capability `json:"capabilities"`
 	Properties   []Property   `json:"properties"`
-	Actions 	 []Capability `json:"actions"`
+	Actions      []Capability `json:"actions"`
+	CustomData   interface{}  `json:"custom_data"`
 }
 
 type Property struct {

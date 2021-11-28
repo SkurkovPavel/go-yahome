@@ -10,7 +10,7 @@ import (
 func (ya *YaClient) UnlinkAccount() (*IotResponseStatus, error) {
 	var errMethodName = "[unlinkAccount]"
 
-	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+ "/v1.0/user/unlink"), nil)
+	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+"/v1.0/user/unlink"), nil)
 	if err != nil {
 		return nil, ErrorReturn(errMethodName, err)
 	}
@@ -22,7 +22,6 @@ func (ya *YaClient) UnlinkAccount() (*IotResponseStatus, error) {
 
 	return &result, nil
 }
-
 
 func (ya *YaClient) GetInfo() (*IotInfoResponse, error) {
 	var errMethodName = "[getInfo]"

@@ -23,13 +23,12 @@ func TestGroupValidator_New(t *testing.T) {
 	})
 	t.Run("OK", func(t *testing.T) {
 		g.Actions = []Capability{Capability{
-			Type:        "test",
+			Type: "test",
 		}}
 		err := g.Validate()
 		require.NoError(t, err)
 	})
 }
-
 
 func TestDeviceValidator_New(t *testing.T) {
 
@@ -45,7 +44,7 @@ func TestDeviceValidator_New(t *testing.T) {
 	})
 	t.Run("EMPTY TYPE", func(t *testing.T) {
 		d.Actions = []Capability{Capability{
-			Type:        "test",
+			Type: "test",
 		}}
 		err := d.Validate()
 		require.Error(t, err)
@@ -56,7 +55,7 @@ func TestDeviceValidator_New(t *testing.T) {
 		require.Error(t, err)
 	})
 	t.Run("OK", func(t *testing.T) {
-		d.State= "test"
+		d.State = "test"
 		err := d.Validate()
 		require.NoError(t, err)
 	})
@@ -67,8 +66,8 @@ func TestErrReturner_New(t *testing.T) {
 	method := "test"
 	tErr := errors.New("test")
 
-	expErr := ErrorReturn(method,tErr)
+	expErr := ErrorReturn(method, tErr)
 
 	require.Error(t, expErr)
-	assert.Equal(t, expErr,fmt.Errorf("%s error: %s", method, tErr.Error()))
+	assert.Equal(t, expErr, fmt.Errorf("%s error: %s", method, tErr.Error()))
 }

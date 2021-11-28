@@ -30,10 +30,10 @@ func (ya *YaClient) SetActionToGroup(group Group) (*IotGroupResponse, error) {
 	var errMethodName = "[setActionToGroup]"
 
 	if err := group.Validate(); err != nil {
-		return nil,  ErrorReturn(errMethodName,err)
+		return nil, ErrorReturn(errMethodName, err)
 	}
 
-	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+ "/v1.0/groups/" + group.Id + "/actions"),group)
+	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+"/v1.0/groups/"+group.Id+"/actions"), group)
 	if err != nil {
 		return nil, ErrorReturn(errMethodName, err)
 	}

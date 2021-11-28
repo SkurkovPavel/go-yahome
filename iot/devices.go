@@ -6,7 +6,6 @@ import (
 	"fmt"
 )
 
-
 func (ya *YaClient) GetDevice(deviceID string) (*IotDeviceResponse, error) {
 	var errMethodName = "[getDevices]"
 
@@ -16,7 +15,7 @@ func (ya *YaClient) GetDevice(deviceID string) (*IotDeviceResponse, error) {
 
 	body, err := ya.get(fmt.Sprintf(ya.config.IotUrl + "/v1.0/devices/" + deviceID))
 	if err != nil {
-		return nil, ErrorReturn(errMethodName,err)
+		return nil, ErrorReturn(errMethodName, err)
 	}
 
 	var result IotDeviceResponse
@@ -27,12 +26,12 @@ func (ya *YaClient) GetDevice(deviceID string) (*IotDeviceResponse, error) {
 	return &result, nil
 }
 
-func (ya *YaClient) QueryDevices() (*IotResponseStatus, error) {
+func (ya *YaClient) QueryDevices(devices *[]Device) (*IotResponseStatus, error) {
 	var errMethodName = "[unlinkAccount]"
 
-	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+ "/v1.0/user/devices/query"),nil)
+	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+"/v1.0/user/devices/query"), devices)
 	if err != nil {
-		return nil, ErrorReturn(errMethodName,err)
+		return nil, ErrorReturn(errMethodName, err)
 	}
 
 	var result IotResponseStatus
@@ -46,13 +45,13 @@ func (ya *YaClient) QueryDevices() (*IotResponseStatus, error) {
 func (ya *YaClient) SetActionToDevice(device Device) (*[]Device, error) {
 	var errMethodName = "[setActionToDevice]"
 
-	if err := device.Validate();err != nil {
-	return nil,  ErrorReturn(errMethodName,err)
+	if err := device.Validate(); err != nil {
+		return nil, ErrorReturn(errMethodName, err)
 	}
 
-	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+ "/v1.0/devices/actions"),nil)
+	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+"/v1.0/devices/actions"), nil)
 	if err != nil {
-		return nil, ErrorReturn(errMethodName,err)
+		return nil, ErrorReturn(errMethodName, err)
 	}
 
 	var result IotInfoResponse

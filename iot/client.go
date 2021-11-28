@@ -14,11 +14,11 @@ func (ya *YaClient) get(url string) ([]byte, error) {
 }
 
 func (ya *YaClient) post(url string, body interface{}) ([]byte, error) {
-	bytes,err := json.Marshal(body)
+	bytes, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
-	return ya.do(url, "POST",bytes )
+	return ya.do(url, "POST", bytes)
 }
 
 func (ya *YaClient) do(url, method string, reqBody []byte) ([]byte, error) {
@@ -26,11 +26,11 @@ func (ya *YaClient) do(url, method string, reqBody []byte) ([]byte, error) {
 	var bearer = "Bearer " + ya.config.Token
 
 	var reqReader io.Reader = nil
-	if reqBody != nil{
+	if reqBody != nil {
 		reqReader = bytes.NewBuffer(reqBody)
 	}
 
-	req, err := http.NewRequest(method, url,reqReader)
+	req, err := http.NewRequest(method, url, reqReader)
 
 	req.Header.Add("Authorization", bearer)
 	req.Header.Set("Content-Type", "application/json")

@@ -30,7 +30,7 @@ func TestService_Info(t *testing.T) {
 	cl := configureNewIotClient(&Config{IotUrl: ts.URL}, ts.Client())
 
 	t.Run("TEST DO", func(t *testing.T) {
-		body, err := cl.do(cl.config.IotUrl, "GET",nil)
+		body, err := cl.do(cl.config.IotUrl, "GET", nil)
 		require.NoError(t, err)
 		assert.Equal(t, []byte(jsonStringIfo+"\n"), body)
 	})
@@ -160,14 +160,13 @@ func TestService_Unauthorised(t *testing.T) {
 	t.Parallel()
 	cl := NewIotClient(NewConfig())
 
-
 	t.Run("TEST GetInfo 401", func(t *testing.T) {
 		_, err := cl.get(cl.config.IotUrl + "/v1.0/user/info")
 		require.Error(t, err)
 		assert.Equal(t, err.Error(), "401 Unauthorized")
 	})
 	t.Run("TEST GetInfo 401", func(t *testing.T) {
-		_, err := cl.post(cl.config.IotUrl+ "/v1.0/user/unlink",nil)
+		_, err := cl.post(cl.config.IotUrl+"/v1.0/user/unlink", nil)
 		require.Error(t, err)
 		assert.Equal(t, err.Error(), "404 Not Found")
 	})
