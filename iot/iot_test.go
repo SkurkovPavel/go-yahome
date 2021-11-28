@@ -27,10 +27,10 @@ func TestService_Info(t *testing.T) {
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, jsonStringIfo) }))
 	defer ts.Close()
 
-	cl := configureNewIotClient(&Config{BaseUrl: ts.URL}, ts.Client())
+	cl := configureNewIotClient(&Config{IotUrl: ts.URL}, ts.Client())
 
 	t.Run("TEST DO", func(t *testing.T) {
-		body, err := cl.do(cl.config.BaseUrl, "GET")
+		body, err := cl.do(cl.config.IotUrl, "GET",nil)
 		require.NoError(t, err)
 		assert.Equal(t, []byte(jsonStringIfo+"\n"), body)
 	})
@@ -55,7 +55,7 @@ func TestService_Device(t *testing.T) {
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, jsonTestString) }))
 	defer ts.Close()
 
-	cl := configureNewIotClient(&Config{BaseUrl: ts.URL}, ts.Client())
+	cl := configureNewIotClient(&Config{IotUrl: ts.URL}, ts.Client())
 
 	t.Run("TEST GetDevice", func(t *testing.T) {
 
@@ -78,7 +78,7 @@ func TestService_Group(t *testing.T) {
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, jsonTestString) }))
 	defer ts.Close()
 
-	cl := configureNewIotClient(&Config{BaseUrl: ts.URL}, ts.Client())
+	cl := configureNewIotClient(&Config{IotUrl: ts.URL}, ts.Client())
 
 	t.Run("TEST GetGroup", func(t *testing.T) {
 
@@ -101,7 +101,7 @@ func TestService_TriggerScenario(t *testing.T) {
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, jsonTestString) }))
 	defer ts.Close()
 
-	cl := configureNewIotClient(&Config{BaseUrl: ts.URL}, ts.Client())
+	cl := configureNewIotClient(&Config{IotUrl: ts.URL}, ts.Client())
 
 	t.Run("TEST TriggerScenario", func(t *testing.T) {
 
@@ -124,7 +124,7 @@ func TestService_Errors(t *testing.T) {
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, jsonTestString) }))
 	defer ts.Close()
 
-	cl := configureNewIotClient(&Config{BaseUrl: ts.URL}, ts.Client())
+	cl := configureNewIotClient(&Config{IotUrl: ts.URL}, ts.Client())
 
 	t.Run("TEST GetInfo ERROR", func(t *testing.T) {
 		_, err := cl.GetInfo()
@@ -134,12 +134,24 @@ func TestService_Errors(t *testing.T) {
 		_, err := cl.GetGroup("test")
 		require.Error(t, err)
 	})
+	t.Run("TEST TriggerScenario EMPTY", func(t *testing.T) {
+		_, err := cl.GetGroup("")
+		require.Error(t, err)
+	})
 	t.Run("TEST GetDevice ERROR", func(t *testing.T) {
 		_, err := cl.GetDevice("test")
 		require.Error(t, err)
 	})
+	t.Run("TEST GetDevice EMPTY", func(t *testing.T) {
+		_, err := cl.GetDevice("")
+		require.Error(t, err)
+	})
 	t.Run("TEST TriggerScenario ERROR", func(t *testing.T) {
 		_, err := cl.TriggerScenario("test")
+		require.Error(t, err)
+	})
+	t.Run("TEST TriggerScenario EMPTY", func(t *testing.T) {
+		_, err := cl.TriggerScenario("")
 		require.Error(t, err)
 	})
 }
@@ -148,9 +160,15 @@ func TestService_Unauthorised(t *testing.T) {
 	t.Parallel()
 	cl := NewIotClient(NewConfig())
 
+
 	t.Run("TEST GetInfo 401", func(t *testing.T) {
-		_, err := cl.GetInfo()
+		_, err := cl.get(cl.config.IotUrl + "/v1.0/user/info")
 		require.Error(t, err)
 		assert.Equal(t, err.Error(), "401 Unauthorized")
+	})
+	t.Run("TEST GetInfo 401", func(t *testing.T) {
+		_, err := cl.post(cl.config.IotUrl+ "/v1.0/user/unlink",nil)
+		require.Error(t, err)
+		assert.Equal(t, err.Error(), "404 Not Found")
 	})
 }
