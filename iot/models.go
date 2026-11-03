@@ -49,11 +49,11 @@ type InfoGroup struct {
 	Capabilities []Capability `json:"capabilities"`
 }
 type Capability struct {
-	Reportable  bool        `json:"reportable"`
-	Retrievable bool        `json:"retrievable"`
-	Type        string      `json:"type"`
-	Parameters  interface{} `json:"parameters"`
-	State       interface{} `json:"state"`
+	Reportable  bool   `json:"reportable"`
+	Retrievable bool   `json:"retrievable"`
+	Type        string `json:"type"`
+	Parameters  any    `json:"parameters"`
+	State       any    `json:"state"`
 }
 
 type Device struct {
@@ -70,15 +70,15 @@ type Device struct {
 	Capabilities []Capability `json:"capabilities"`
 	Properties   []Property   `json:"properties"`
 	Actions      []Capability `json:"actions"`
-	CustomData   interface{}  `json:"custom_data"`
+	CustomData   any          `json:"custom_data"`
 }
 
 type Property struct {
-	Retrievable bool        `json:"retrievable"`
-	Type        string      `json:"type"`
-	Parameters  interface{} `json:"parameters"`
-	State       interface{} `json:"state"`
-	LastUpdated float64     `json:"last_updated"`
+	Retrievable bool    `json:"retrievable"`
+	Type        string  `json:"type"`
+	Parameters  any     `json:"parameters"`
+	State       any     `json:"state"`
+	LastUpdated float64 `json:"last_updated"`
 }
 type Scenario struct {
 	Id       string `json:"id"`
