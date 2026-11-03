@@ -13,7 +13,7 @@ func (ya *YaClient) TriggerScenario(scenarioID string) (*IotResponseStatus, erro
 		return nil, ErrorReturn(errMethodName, errors.New(" scenarioID not provided"))
 	}
 
-	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+"/v1.0/scenarios/"+scenarioID+"/actions"), nil)
+	body, err := ya.post(fmt.Sprint(ya.config.IotUrl+"/v1.0/scenarios/"+scenarioID+"/actions"), nil)
 	if err != nil {
 		return nil, ErrorReturn(errMethodName, err)
 	}
