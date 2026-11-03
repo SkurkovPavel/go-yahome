@@ -13,7 +13,7 @@ func (ya *YaClient) GetDevice(deviceID string) (*IotDeviceResponse, error) {
 		return nil, ErrorReturn(errMethodName, errors.New("deviceID not provided"))
 	}
 
-	body, err := ya.get(fmt.Sprintf(ya.config.IotUrl + "/v1.0/devices/" + deviceID))
+	body, err := ya.get(fmt.Sprint(ya.config.IotUrl + "/v1.0/devices/" + deviceID))
 	if err != nil {
 		return nil, ErrorReturn(errMethodName, err)
 	}
@@ -29,7 +29,7 @@ func (ya *YaClient) GetDevice(deviceID string) (*IotDeviceResponse, error) {
 func (ya *YaClient) QueryDevices(devices *[]Device) (*IotResponseStatus, error) {
 	var errMethodName = "[unlinkAccount]"
 
-	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+"/v1.0/user/devices/query"), devices)
+	body, err := ya.post(fmt.Sprint(ya.config.IotUrl+"/v1.0/user/devices/query"), devices)
 	if err != nil {
 		return nil, ErrorReturn(errMethodName, err)
 	}
@@ -49,7 +49,7 @@ func (ya *YaClient) SetActionToDevice(device Device) (*[]Device, error) {
 		return nil, ErrorReturn(errMethodName, err)
 	}
 
-	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+"/v1.0/devices/actions"), nil)
+	body, err := ya.post(fmt.Sprint(ya.config.IotUrl+"/v1.0/devices/actions"), nil)
 	if err != nil {
 		return nil, ErrorReturn(errMethodName, err)
 	}

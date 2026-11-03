@@ -13,7 +13,7 @@ func (ya *YaClient) GetGroup(groupID string) (*IotGroupResponse, error) {
 		return nil, ErrorReturn(errMethodName, errors.New(" groupID not provided"))
 	}
 
-	body, err := ya.get(fmt.Sprintf(ya.config.IotUrl + "/v1.0/groups/" + groupID))
+	body, err := ya.get(fmt.Sprint(ya.config.IotUrl + "/v1.0/groups/" + groupID))
 	if err != nil {
 		return nil, ErrorReturn(errMethodName, err)
 	}
@@ -33,7 +33,7 @@ func (ya *YaClient) SetActionToGroup(group Group) (*IotGroupResponse, error) {
 		return nil, ErrorReturn(errMethodName, err)
 	}
 
-	body, err := ya.post(fmt.Sprintf(ya.config.IotUrl+"/v1.0/groups/"+group.Id+"/actions"), group)
+	body, err := ya.post(fmt.Sprint(ya.config.IotUrl+"/v1.0/groups/"+group.Id+"/actions"), group)
 	if err != nil {
 		return nil, ErrorReturn(errMethodName, err)
 	}
