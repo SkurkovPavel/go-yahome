@@ -13,7 +13,7 @@ func (ya *YaClient) get(url string) ([]byte, error) {
 	return ya.do(url, "GET", nil)
 }
 
-func (ya *YaClient) post(url string, body interface{}) ([]byte, error) {
+func (ya *YaClient) post(url string, body any) ([]byte, error) {
 	bBody, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
